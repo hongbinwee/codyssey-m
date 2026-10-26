@@ -10,6 +10,7 @@ class Settings(BaseModel):
     app_name: str = "MySchedule AI"
     openai_api_key: str = Field(default="", repr=False)
     openai_model: str = "gpt-5-mini"
+    openai_max_completion_tokens: int = Field(default=2048, ge=256, le=8192)
     openai_base_url: str = "https://copa.codyssey.kr/v1"
     firebase_service_account_json: str = Field(default="", repr=False)
     firebase_service_account_path: str = Field(default="", repr=False)
@@ -23,6 +24,7 @@ def get_settings() -> Settings:
     return Settings(
         openai_api_key=os.getenv("OPENAI_API_KEY", ""),
         openai_model=os.getenv("OPENAI_MODEL", "gpt-5-mini"),
+        openai_max_completion_tokens=os.getenv("OPENAI_MAX_COMPLETION_TOKENS", "2048"),
         openai_base_url=os.getenv("OPENAI_BASE_URL", "https://copa.codyssey.kr/v1"),
         firebase_service_account_json=os.getenv("FIREBASE_SERVICE_ACCOUNT_JSON", ""),
         firebase_service_account_path=os.getenv("FIREBASE_SERVICE_ACCOUNT_PATH", ""),

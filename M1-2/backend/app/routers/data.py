@@ -1,4 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi.exceptions import RequestValidationError
+from pydantic import ValidationError
 from app.dependencies import get_repository
 from app.models.schedule import ScheduleCreate, ScheduleOut, ScheduleUpdate
 from app.services.analysis_service import build_schedule_summary
@@ -31,7 +33,11 @@ def update_data(schedule_id: str, payload: ScheduleUpdate, repo=Depends(get_repo
     candidate = {key: value for key, value in current.items() if key != "id"}
     candidate.update(updates)
     # 전체 모델로 재검증해 부분 수정 후 시간/value 불일치도 차단
-    validated = ScheduleCreate(**candidate)
+    try:
+        validated = ScheduleCreate(**candidate)
+    except ValidationError as exc:
+        errors = [{**error, "loc": ("body", *error["loc"])} for error in exc.errors()]
+        raise RequestValidationError(errors) from exc
     updated = repo.update_schedule(schedule_id, validated.model_dump(mode="json"))
     return updated
 

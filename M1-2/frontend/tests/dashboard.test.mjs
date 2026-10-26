@@ -89,6 +89,23 @@ async function mount(fetchOverride = null) {
 test("empty summary is identified as no data", async () => {
   const { element } = await mount();
   assert.match(element("trendBadge").textContent, /데이터 없음/);
+    assert.match(element("periodMetric").textContent, /없음/);
+});
+
+test("summary shows the analysis period from the API", async () => {
+  const { element } = await mount((path) => path === "/api/data/summary" ? response({
+    ...emptySummary, count: 3, period: { start: "2026-10-01", end: "2026-10-26" },
+  }) : null);
+  assert.match(element("periodMetric").textContent, /2026-10-01.*2026-10-26/);
+});
+
+test("failed conversation reload reports an error and preserves existing messages", async () => {
+  const { context, element } = await mount((path) => path === "/api/conversations/missing"
+    ? response({ detail: "대화를 찾을 수 없습니다." }, 404) : null);
+  element("messages").innerHTML = "기존 메시지";
+  await context.loadConversation("missing");
+  assert.match(element("toast").textContent, /대화.*실패/);
+  assert.equal(element("messages").innerHTML, "기존 메시지");
 });
 
 test("failed schedule save shows an error and restores the button", async () => {

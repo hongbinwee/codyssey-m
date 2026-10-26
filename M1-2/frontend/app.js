@@ -33,6 +33,7 @@ const categoryKo = {study:"학습",project:"프로젝트",meeting:"회의",exerc
 
 async function loadSummary(){
   const s=await request("/api/data/summary");
+  $("periodMetric").textContent=s.period ? `${s.period.start} ~ ${s.period.end}` : "데이터 없음";
   $("countMetric").textContent=`${s.count}개`;
   $("hoursMetric").textContent=`${s.metrics.total_hours}h`;
   $("weekdayMetric").textContent=s.busiest_weekday?.weekday || "-";
@@ -70,7 +71,9 @@ async function loadConversations(){
 }
 
 async function loadConversation(id){
-  const c=await request(`/api/conversations/${id}`); currentConversationId=id; $("messages").innerHTML=""; (c.messages||[]).forEach(m=>addMessage(m.role,m.content)); showToast("대화를 불러왔습니다.");
+  try{
+    const c=await request(`/api/conversations/${id}`); currentConversationId=id; $("messages").innerHTML=""; (c.messages||[]).forEach(m=>addMessage(m.role,m.content)); showToast("대화를 불러왔습니다.");
+  }catch(err){showToast(`대화 불러오기 실패: ${err.message}`);}
 }
 
 function addMessage(role, content){

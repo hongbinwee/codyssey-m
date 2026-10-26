@@ -1,4 +1,5 @@
 from fastapi.testclient import TestClient
+import pytest
 from app.main import app
 from app.dependencies import get_repository, get_chat_service
 from app.services.chat_service import ChatService
@@ -79,3 +80,24 @@ def test_partial_update_can_clear_schedule_memo():
     assert updated.status_code == 200
     assert updated.json()["memo"] is None
     assert repo.get_schedule(sid)["memo"] is None
+
+
+@pytest.mark.parametrize("updates", [
+    {"end_time": "08:00"},
+    {"value": 300},
+    {"start_time": None},
+])
+def test_invalid_partial_update_returns_422_without_changing_schedule(updates):
+    payload = {
+        "date": "2026-10-26", "start_time": "09:00", "end_time": "10:00",
+        "value": 60, "title": "수정 검증", "category": "study", "memo": None,
+    }
+    created = client.post("/api/data", json=payload)
+    sid = created.json()["id"]
+    try:
+        result = client.put(f"/api/data/{sid}", json=updates)
+        assert result.status_code == 422
+        assert result.json()["detail"][0]["loc"][0] == "body"
+        assert repo.get_schedule(sid) == {"id": sid, **payload}
+    finally:
+        repo.delete_schedule(sid)

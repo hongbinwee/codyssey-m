@@ -4,5 +4,6 @@
 body.dark{background:#15131e;color:#f3f1fb}body.dark header p{color:#a9a4ba}body.dark .card{background:#211e2c;border-color:#332e43;box-shadow:none}body.dark .metrics div,body.dark .messages,body.dark .conversation-item{background:#191721}body.dark .message.assistant{background:#262230;border-color:#39334a}body.dark input,body.dark select{background:#191721;color:#f3f1fb;border-color:#40394f}body.dark th,body.dark td{border-color:#332e43}body.dark .ghost{background:#262230;color:#d7d0ff;border-color:#40395b}
 
 .cold-note{font-size:12px;margin-top:6px!important;color:#8a8499!important}
+.summary-period{font-size:12px;color:#7d788f;margin:-6px 0 14px}
 
 .card{min-width:0}.chat-form input,.schedule-form input,.schedule-form select{min-width:0}
