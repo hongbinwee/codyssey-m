@@ -18,7 +18,7 @@ The browser smoke check used a fake API and does not represent a production serv
 
 | Target | Status |
 |---|---|
-| GitHub | Pending |
+| GitHub | Published: `937e974` |
 | Backend deployment | Pending |
 | Frontend deployment | Pending |
 | Service URLs | TBD |

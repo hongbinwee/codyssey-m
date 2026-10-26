@@ -13,10 +13,11 @@
 - [x] 백엔드 테스트 10개 통과
 - [x] 프론트 테스트 6개 통과
 - [x] 로컬 브라우저 스모크 시나리오 확인
+- [x] README에 환경 변수 이름과 비밀값 관리 안내 기록
 
 ## 제출 및 배포
 
-- [ ] GitHub 반영
+- [x] GitHub 반영: https://github.com/hongbinwee/codyssey-m
 - [ ] Render backend 배포
 - [ ] Vercel frontend 배포
 - [ ] Backend, Swagger, Frontend URL 기입
