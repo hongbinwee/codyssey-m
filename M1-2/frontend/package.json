@@ -1,0 +1,8 @@
+{
+  "name": "myschedule-ai-frontend",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/generate-config.mjs",
+    "test": "node --test tests/dashboard.test.mjs tests/generate-config.test.mjs"
+  }
+}
